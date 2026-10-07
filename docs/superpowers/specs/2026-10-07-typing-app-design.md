@@ -77,7 +77,7 @@ Theme: background near-black navy (`#0b0f1a`), text `#c9d1e0`, correct = cyan, e
 
 - **WPM** = (correct chars incl. spaces ÷ 5) ÷ minutes elapsed. Same formula for Thai (1 code point = 1 char).
 - **Raw WPM** = (all typed chars ÷ 5) ÷ minutes.
-- **Accuracy** = correct keystrokes ÷ total keystrokes (backspaced errors still count).
+- **Accuracy** = correct keystrokes ÷ (total keystrokes + missed chars skipped with Space). Backspaced errors still count.
 - **Per-key stats** (per language): hits, errors, mean interval from previous keystroke (intervals > 2 s ignored).
 - **Weakness score** per key = `0.7 × errorRate + 0.3 × clamp(meanInterval / overallMeanInterval − 1, 0, 1)`, stored as an exponential moving average (α = 0.1 per session) so recent practice dominates. Keys with fewer than 10 hits are excluded.
 - **Drill word selection:** 70% of words drawn with probability ∝ sum of weakness scores of their chars, 30% uniform. Top 5 weak keys displayed.

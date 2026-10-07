@@ -55,12 +55,13 @@ export function useTypingSession(opts: Options) {
     if (r.end !== null) return r.typing;
     const t = performance.now();
     const { config } = optsRef.current;
-    if (r.start === null) r.start = t;
-    if (config.kind === 'time' && t - r.start >= config.seconds * 1000) {
+    if (r.start !== null && config.kind === 'time' && t - r.start >= config.seconds * 1000) {
       finish(r.start + config.seconds * 1000);
       return r.typing;
     }
     let next = typeChar(r.typing, ch, t);
+    if (next === r.typing) return next; // ignored key (e.g. leading space) must not start the clock
+    if (r.start === null) r.start = t;
     if (config.kind === 'time' && next.words.length - next.wordIndex < 20) next = appendWords(next, makeWords(40));
     r.typing = next;
     force();

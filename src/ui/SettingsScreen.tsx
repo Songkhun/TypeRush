@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { defaultData, type FxIntensity, type Settings } from '../store/storage';
 import { useApp } from './AppContext';
 
@@ -7,6 +8,13 @@ export function SettingsScreen() {
   const { data, commit, intensity } = useApp();
   const s = data.settings;
   const set = (patch: Partial<Settings>) => commit({ ...data, settings: { ...s, ...patch } });
+  const [goalText, setGoalText] = useState(String(s.dailyGoalMin));
+  const commitGoal = () => {
+    const v = Math.round(Number(goalText));
+    const goal = goalText.trim() !== '' && Number.isFinite(v) ? Math.min(120, Math.max(1, v)) : s.dailyGoalMin;
+    setGoalText(String(goal));
+    if (goal !== s.dailyGoalMin) set({ dailyGoalMin: goal });
+  };
 
   return (
     <section className="settings card">
@@ -26,11 +34,10 @@ export function SettingsScreen() {
       )}
       <label className="setting">Daily goal (minutes)
         <input
-          type="number" min={1} max={120} value={s.dailyGoalMin}
-          onChange={(e) => {
-            const v = Math.round(Number(e.target.value));
-            if (Number.isFinite(v)) set({ dailyGoalMin: Math.min(120, Math.max(1, v)) });
-          }}
+          type="number" min={1} max={120} value={goalText}
+          onChange={(e) => setGoalText(e.target.value)}
+          onBlur={commitGoal}
+          onKeyDown={(e) => { if (e.key === 'Enter') commitGoal(); }}
         />
       </label>
       <label className="setting">On-screen keyboard
