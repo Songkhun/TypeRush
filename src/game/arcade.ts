@@ -157,6 +157,7 @@ function miss(s: GameState): void {
 
 export function typeKey(s: GameState, ch: string): void {
   if (s.over) return;
+  if (ch === ' ' && s.lockId === null) return; // habit space between words: not a miss
   s.keystrokes++;
   let target = s.lockId !== null ? s.enemies.find((e) => e.id === s.lockId) : undefined;
   if (!target) {

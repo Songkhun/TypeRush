@@ -81,7 +81,10 @@ describe('isFinished / correctChars / appendWords', () => {
   });
   it('counts matching chars plus spaces', () => {
     expect(correctChars(typeAll(createTyping(['ab', 'cd']), 'ab cd'))).toBe(5);
-    expect(correctChars(typeAll(createTyping(['ab', 'cd']), 'ax cd'))).toBe(4);
+    expect(correctChars(typeAll(createTyping(['ab', 'cd']), 'ax cd'))).toBe(3); // no credit for the space after a wrong word
+  });
+  it('gives no correct chars for an all-wrong run with spaces', () => {
+    expect(correctChars(typeAll(createTyping(['ab', 'ab', 'ab']), 'xy xy xy'))).toBe(0);
   });
   it('appends words', () => {
     const s = appendWords(createTyping(['a']), ['b', 'c']);

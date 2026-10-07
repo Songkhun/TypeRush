@@ -85,10 +85,11 @@ export function backspace(s: TypingState): TypingState {
 }
 
 export function correctChars(s: TypingState): number {
-  let n = Math.min(s.wordIndex, s.words.length); // one correct space per completed word
+  let n = 0;
   const upto = Math.min(s.wordIndex, s.words.length - 1);
   for (let i = 0; i <= upto; i++) {
     const w = s.words[i];
+    if (i < s.wordIndex && w.typed.join('') === w.target.join('')) n++; // its space counts only after an exact word
     const len = Math.min(w.typed.length, w.target.length);
     for (let j = 0; j < len; j++) if (w.typed[j] === w.target[j]) n++;
   }

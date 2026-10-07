@@ -114,6 +114,21 @@ describe('typing', () => {
     for (let i = 0; i < 40; i++) { spawnEnemy(s, 'cat', 300, 100, 0); typeWord(s, 'cat'); }
     expect(s.multiplier).toBe(4);
   });
+  it('ignores space when no word is locked', () => {
+    const s = quiet();
+    spawnEnemy(s, 'cat', 300, 100, 0);
+    s.multiplier = 3; s.cleanStreak = 25;
+    typeKey(s, ' ');
+    expect(s.keystrokes).toBe(0);
+    expect(s.multiplier).toBe(3);
+    expect(drainEvents(s)).toEqual([]);
+  });
+  it('still requires space inside a locked boss phrase', () => {
+    const s = quiet();
+    const e = spawnEnemy(s, 'ab cd', 300, 100, 0, true);
+    typeWord(s, 'ab ');
+    expect(e.typed).toBe(3);
+  });
   it('release drops the lock and resets progress', () => {
     const s = quiet();
     const e = spawnEnemy(s, 'cat', 300, 100, 0);

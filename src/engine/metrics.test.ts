@@ -24,7 +24,7 @@ describe('computeResult', () => {
   it('run with an error', () => {
     const s = play(['ab', 'cd'], [['a', 0], ['x', 100], [' ', 200], ['c', 300], ['d', 400]]);
     const r = computeResult(s, 60000);
-    expect(r.correctChars).toBe(4);
+    expect(r.correctChars).toBe(3);
     expect(r.acc).toBeCloseTo(0.6);
   });
   it('all-wrong run has zero WPM and accuracy, never NaN', () => {
@@ -32,6 +32,8 @@ describe('computeResult', () => {
     const r = computeResult(s, 30000);
     expect(r.wpm).toBe(0);
     expect(r.acc).toBe(0);
+    const spaced = computeResult(play(['ab', 'ab', 'ab'], [['x', 0], ['y', 100], [' ', 200], ['x', 300], ['y', 400], [' ', 500]]), 15000);
+    expect(spaced.wpm).toBe(0);
     const empty = computeResult(createTyping(['ab']), 0);
     expect(Number.isNaN(empty.acc) || Number.isNaN(empty.wpm)).toBe(false);
   });
