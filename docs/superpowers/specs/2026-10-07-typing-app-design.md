@@ -33,7 +33,7 @@ src/
     wordgen.ts     random + weak-key-weighted word selection, seedable RNG
     keyboard.ts    EN QWERTY + TH Kedmanee layouts (char -> key id, shift flag)
     progress.ts    XP, levels, daily goal, streak
-  data/        en-words.ts, th-words.ts (~1000 common words each)
+  data/        en-words.ts (~450 common words), th-words.ts (~300 common words)
   store/       versioned localStorage persistence
   game/        arcade: fixed-timestep loop, entities, spawning, collision, scoring
   fx/          particles, screen shake, Web Audio synth
@@ -61,7 +61,7 @@ Theme: background near-black navy (`#0b0f1a`), text `#c9d1e0`, correct = cyan, e
 
 **Input capture.** A hidden, always-focused `<input>`; read its `input` events (`InputEvent.data`) instead of `keydown`, so the OS Thai input source produces the real Thai characters. Use `keydown` only for Backspace, Escape and Tab (restart).
 
-**Comparison.** Work one Unicode code point at a time. Each Thai keystroke, including above/below vowels and tone marks, produces one code point, so typed characters map 1:1 to target characters. Rendering groups characters into grapheme clusters (`Intl.Segmenter`) so combining marks display correctly; per-character coloring is applied within clusters.
+**Comparison.** Work one Unicode code point at a time. Each Thai keystroke, including above/below vowels and tone marks, produces one code point, so typed characters map 1:1 to target characters. Rendering groups characters into grapheme clusters (`Intl.Segmenter`) so combining marks display correctly. Each cluster is one span colored by its worst character state (incorrect > missed > partial > pending > correct); a partly typed cluster shows as `partial`.
 
 - Correct char → mark correct, combo +1.
 - Wrong char → mark incorrect, combo = 0, record error for the *expected* key. Typing moves on regardless.
