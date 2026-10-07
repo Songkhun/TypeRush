@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a2140"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="cap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f2a4d"/>
+      <stop offset="1" stop-color="#121829"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)"/>
+  <g stroke-linecap="round" stroke-width="22" opacity="0.9">
+    <line x1="170" y1="430" x2="270" y2="430" stroke="#f472b6"/>
+    <line x1="150" y1="520" x2="270" y2="520" stroke="#fbbf24"/>
+    <line x1="190" y1="610" x2="270" y2="610" stroke="#a78bfa"/>
+  </g>
+  <rect x="300" y="300" width="460" height="440" rx="70" fill="#060912" opacity="0.6" transform="translate(0 36)"/>
+  <rect x="300" y="300" width="460" height="440" rx="70" fill="url(#cap)" stroke="#22d3ee" stroke-width="16" filter="url(#glow)"/>
+  <rect x="340" y="330" width="380" height="300" rx="46" fill="none" stroke="#22d3ee" stroke-opacity="0.25" stroke-width="6"/>
+  <text x="530" y="590" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-weight="800" font-size="300" fill="#22d3ee" filter="url(#glow)">T</text>
+</svg>
