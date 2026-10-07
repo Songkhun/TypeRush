@@ -41,7 +41,7 @@ function ArcadeRun({ lang, onAgain, onExit }: { lang: Lang; onAgain(): void; onE
 
   useEffect(() => {
     const handle = (ev: GameEvent) => {
-      const { sound, intensity } = appRef.current;
+      const { sound, intensity, palette } = appRef.current;
       const v = view.current;
       switch (ev.type) {
         case 'hit':
@@ -49,7 +49,7 @@ function ArcadeRun({ lang, onAgain, onExit }: { lang: Lang; onAgain(): void; onE
           sound.laser();
           break;
         case 'destroy':
-          v.particles.push(...burst(ev.x, ev.y, particleCount(ev.boss ? 80 : 26, intensity), ev.boss ? '#fbbf24' : '#22d3ee'));
+          v.particles.push(...burst(ev.x, ev.y, particleCount(ev.boss ? 80 : 26, intensity), ev.boss ? palette.combo : palette.correct));
           sound.explosion();
           break;
         case 'miss':
@@ -57,7 +57,7 @@ function ArcadeRun({ lang, onAgain, onExit }: { lang: Lang; onAgain(): void; onE
           break;
         case 'damage':
           if (intensity !== 'off') v.shake = intensity === 'full' ? 0.4 : 0.15;
-          v.particles.push(...burst(SHIP.x, SHIP.y, particleCount(30, intensity), '#f472b6'));
+          v.particles.push(...burst(SHIP.x, SHIP.y, particleCount(30, intensity), palette.error));
           sound.error();
           break;
         case 'waveEnd':
@@ -106,7 +106,7 @@ function ArcadeRun({ lang, onAgain, onExit }: { lang: Lang; onAgain(): void; onE
       drainEvents(game.current).forEach(handle);
       updateView(view.current, dt);
       const g = canvasRef.current?.getContext('2d');
-      if (g) render(g, game.current, view.current);
+      if (g) render(g, game.current, view.current, { palette: appRef.current.palette, font: appRef.current.fontStack });
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);

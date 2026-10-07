@@ -24,7 +24,6 @@ const CONFIGS = {
 type ConfigKey = keyof typeof CONFIGS;
 
 const label = (c: TestConfig) => (c.kind === 'time' ? `${c.seconds}s` : `${c.count} words`);
-const TIER_COLORS = ['#c9d1e0', '#c9d1e0', '#22d3ee', '#fbbf24', '#f472b6'];
 
 export function TypingScreen({ mode }: { mode: 'test' | 'drill' }) {
   const { data } = useApp();
@@ -48,7 +47,7 @@ export function TypingScreen({ mode }: { mode: 'test' | 'drill' }) {
 }
 
 function TypingRun({ mode, lang, config, onRestart }: { mode: 'test' | 'drill'; lang: Lang; config: TestConfig; onRestart(): void }) {
-  const { data, commit, sound } = useApp();
+  const { data, commit, sound, palette } = useApp();
   const fx = useFx();
   const dataRef = useRef(data);
   dataRef.current = data;
@@ -88,7 +87,7 @@ function TypingRun({ mode, lang, config, onRestart }: { mode: 'test' | 'drill'; 
     const tier = comboTier(next.combo);
     if (tier > prevTier.current && comboRef.current) {
       const b = comboRef.current.getBoundingClientRect();
-      fx.burst(b.left + b.width / 2, b.top + b.height / 2, 20 + tier * 10, TIER_COLORS[tier]);
+      fx.burst(b.left + b.width / 2, b.top + b.height / 2, 20 + tier * 10, [palette.text, palette.text, palette.correct, palette.combo, palette.error][tier]);
     }
     prevTier.current = tier;
   };

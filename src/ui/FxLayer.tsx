@@ -10,7 +10,6 @@ interface FxApi {
 
 const FxCtx = createContext<FxApi>({ burst() {}, confetti() {}, shake() {} });
 
-const CONFETTI = ['#22d3ee', '#f472b6', '#fbbf24', '#a78bfa', '#34d399'];
 
 export function retrigger(el: HTMLElement, cls: string): void {
   el.classList.remove(cls);
@@ -19,9 +18,11 @@ export function retrigger(el: HTMLElement, cls: string): void {
 }
 
 export function FxLayer({ children }: { children: ReactNode }) {
-  const { intensity } = useApp();
+  const { intensity, palette } = useApp();
   const intensityRef = useRef(intensity);
   intensityRef.current = intensity;
+  const paletteRef = useRef(palette);
+  paletteRef.current = palette;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const raf = useRef(0);
@@ -59,8 +60,10 @@ export function FxLayer({ children }: { children: ReactNode }) {
     },
     confetti() {
       const n = particleCount(150, intensityRef.current);
+      const p = paletteRef.current;
+      const colors = [p.correct, p.error, p.combo, p.accent, p.text];
       for (let i = 0; i < n; i++) {
-        particles.current.push(...burst(Math.random() * window.innerWidth, -10, 1, CONFETTI[i % CONFETTI.length], Math.random, 300));
+        particles.current.push(...burst(Math.random() * window.innerWidth, -10, 1, colors[i % colors.length], Math.random, 300));
       }
       if (n) run();
     },

@@ -15,12 +15,12 @@ export function HomeScreen({ onNav }: { onNav(s: Screen): void }) {
     <div className="home-grid">
       <div className="card ring-wrap">
         <svg width="140" height="140" viewBox="0 0 140 140" aria-label="Daily goal progress">
-          <circle cx="70" cy="70" r={R} stroke="#243050" strokeWidth="12" fill="none" />
+          <circle cx="70" cy="70" r={R} style={{ stroke: 'var(--line)' }} strokeWidth="12" fill="none" />
           <circle
-            cx="70" cy="70" r={R} stroke={pct >= 1 ? '#fbbf24' : '#22d3ee'} strokeWidth="12" fill="none"
+            cx="70" cy="70" r={R} style={{ stroke: pct >= 1 ? 'var(--combo)' : 'var(--correct)' }} strokeWidth="12" fill="none"
             strokeDasharray={C} strokeDashoffset={C * (1 - pct)} strokeLinecap="round" transform="rotate(-90 70 70)"
           />
-          <text x="70" y="76" textAnchor="middle" fill="#c9d1e0" fontSize="22" fontWeight="700">{Math.round(pct * 100)}%</text>
+          <text x="70" y="76" textAnchor="middle" style={{ fill: 'var(--text)' }} fontSize="22" fontWeight="700">{Math.round(pct * 100)}%</text>
         </svg>
         <div>{(todayMs / 60000).toFixed(1)} / {data.settings.dailyGoalMin} min today</div>
         <div className="muted">{pct >= 1 ? 'Goal done. Streak safe 🔥' : 'Hit your goal to keep the streak'}</div>
