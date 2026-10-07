@@ -119,10 +119,12 @@ function TypingRun({ mode, lang, config, onRestart }: { mode: 'test' | 'drill'; 
       {mismatch >= 3 && (
         <div className="banner">Switch your input to {lang === 'th' ? 'Thai' : 'English'} (⌃Space)</div>
       )}
-      <div ref={streamRef}>
-        <WordStream state={s} />
+      <div className="stream-wrap">
+        <div ref={streamRef}>
+          <WordStream state={s} />
+        </div>
+        <HiddenInput onChar={onChar} onBackspace={session.backspace} onTab={onRestart} />
       </div>
-      <HiddenInput onChar={onChar} onBackspace={session.backspace} onTab={onRestart} />
       {data.settings.showKeyboard && <Keyboard lang={lang} nextChar={nextChar} />}
       <p className="hint">Start typing to begin · Tab restarts</p>
     </>

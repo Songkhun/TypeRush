@@ -15,6 +15,20 @@ export function HiddenInput({ onChar, onBackspace, onTab, onEscape, onFocusChang
 
   useEffect(() => { ref.current?.focus(); }, []);
 
+  // While unfocused, a printable key refocuses the input; the browser then
+  // delivers that same keystroke to it, so nothing is lost.
+  useEffect(() => {
+    if (focused) return;
+    const h = (e: KeyboardEvent) => {
+      const el = document.activeElement;
+      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key.length === 1) ref.current?.focus();
+    };
+    window.addEventListener('keydown', h, true);
+    return () => window.removeEventListener('keydown', h, true);
+  }, [focused]);
+
   const setF = (f: boolean) => { setFocused(f); onFocusChange?.(f); };
 
   return (
@@ -42,7 +56,7 @@ export function HiddenInput({ onChar, onBackspace, onTab, onEscape, onFocusChang
       />
       {!focused && (
         <div className="focus-overlay" onClick={() => ref.current?.focus()}>
-          Click here to keep typing
+          Click here or start typing
         </div>
       )}
     </>
