@@ -40,4 +40,25 @@ describe('storage', () => {
     expect(save(defaultData(), bad)).toBe(false);
     expect(load(null)).toEqual(defaultData());
   });
+  it('sanitizes invalid setting values instead of crashing', () => {
+    const d = defaultData() as unknown as Record<string, unknown>;
+    const bad = {
+      language: 'fr', dailyGoalMin: 0, volume: 5, theme: 'pink', font: 'comic', soundPack: 'kazoo',
+      fxIntensity: 'max', fontSize: 99, sound: 'yes', showKeyboard: null,
+    };
+    const { kv } = fake({ [STORAGE_KEY]: JSON.stringify({ ...d, settings: bad }) });
+    const s = load(kv).settings;
+    const def = defaultData().settings;
+    expect(s).toMatchObject({
+      language: 'en', dailyGoalMin: 1, volume: 1, theme: 'neon', font: 'jetbrains', soundPack: def.soundPack,
+      fxIntensity: 'full', sound: true, showKeyboard: true,
+    });
+    expect(s.fontSize).toBeLessThanOrEqual(2.4);
+    const { kv: kv2 } = fake({ [STORAGE_KEY]: JSON.stringify({ ...d, settings: { dailyGoalMin: 999, volume: -1 } }) });
+    expect(load(kv2).settings).toMatchObject({ dailyGoalMin: 120, volume: 0 });
+  });
+  it('defaults the new customization settings', () => {
+    expect(defaultData().settings).toMatchObject({ soundPack: 'retro', volume: 0.8, theme: 'neon', font: 'jetbrains', fontSize: 1.6 });
+  });
 });
+
