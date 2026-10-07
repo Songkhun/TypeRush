@@ -27,3 +27,14 @@ export function resolvePath(root, url) {
   if (full !== rootAbs && !full.startsWith(rootAbs + path.sep)) return null;
   return full;
 }
+
+/** Chrome writes `<host>-<pid>` as the SingletonLock symlink target of a running profile. */
+export function lockPid(target) {
+  const m = /-(\d+)$/.exec(target ?? '');
+  return m ? Number(m[1]) : null;
+}
+
+/** The server outlives its window by at most one check; the grace period covers Chrome's startup. */
+export function shouldStop({ chromeRunning, uptimeMs, graceMs = 60000 }) {
+  return uptimeMs >= graceMs && !chromeRunning;
+}
