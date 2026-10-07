@@ -2,6 +2,13 @@
   "name": "typerush",
   "private": true,
   "version": "0.1.0",
+  "description": "Dark-mode typing trainer for English and Thai with drills, an arcade mode and progress tracking",
+  "license": "MIT",
+  "author": "Songkhun Boonchaisuk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Songkhun/TypeRush.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
